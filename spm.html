@@ -53,6 +53,35 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+        .ppt-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+        .ppt-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .ppt-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .ppt-btn {
+            display: inline-block;
+            background-color: #FF9800;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            border: none;
+            transition: background-color 0.3s;
+        }
+        .ppt-btn:hover {
+            background-color: #F57C00;
+        }
     </style>
 </head>
 <body>
@@ -66,8 +95,16 @@
         <!-- PDF Viewer using iframe -->
         <iframe id="pdf-viewer" src="pdfs/spm.pdf" type="application/pdf"></iframe>
 
+        <div class="ppt-section">
+            <h3>📊 PowerPoint Presentations</h3>
+            <div class="ppt-links">
+                <a href="pdfs/unit-1.pptx" download class="ppt-btn">⬇️ Unit 1</a>
+                <a href="pdfs/unit-2.pptx" download class="ppt-btn">⬇️ Unit 2</a>
+            </div>
+        </div>
+
         <br>
-        <a href="index.html" class="back-link">← Back to All Subjects</a>
+        <a href="cybersecurity.html" class="back-link">← Back to All Subjects</a>
     </div>
 </body>
 </html>
