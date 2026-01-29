@@ -19,6 +19,27 @@
         h2 {
             color: #333;
         }
+        .site-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: linear-gradient(90deg, #2e7d32 0%, #66bb6a 100%);
+            color: white;
+            padding: 18px 20px;
+            border-radius: 8px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+        }
+        .site-header .brand { display:flex; align-items:center; gap:12px }
+        .site-header .logo {
+            width: 64px; height: 64px; border-radius: 50%; background: white; color: #2e7d32;
+            display:flex; align-items:center; justify-content:center; font-weight:800; font-size:14px; box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        .site-header h1 { margin:0; font-size:18px; line-height:1.1; color: #fff }
+        .site-header .tagline { font-size:13px; opacity:0.95 }
+        .header-controls { display:flex; align-items:center; gap:10px }
+        .header-controls .download-btn { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.12) }
+        .header-controls .download-btn:hover { background: rgba(255,255,255,0.18) }
         .controls {
             margin-bottom: 20px;
         }
@@ -86,10 +107,24 @@
 </head>
 <body>
     <div class="container">
+        <header class="site-header">
+            <div class="brand">
+                <div class="logo">GIST</div>
+                <div>
+                    <h1>GEETHANJALI INSTITUTE OF SCIENCE AND TECHNOLOGY</h1>
+                    <div class="tagline">Question Bank</div>
+                </div>
+            </div>
+            <div class="header-controls">
+                <a href="index.html" class="download-btn">🏠 Home</a>
+            </div>
+        </header>
         <h2>SPM Question Bank</h2>
         
         <div class="controls">
             <a href="pdfs/spm.pdf" download class="download-btn">⬇️ Download PDF</a>
+            <button id="add-pdf-btn" class="download-btn" style="margin-left:10px;background-color:#607D8B">➕ Add PDF</button>
+            <div id="pdf-links" style="margin-top:10px"></div>
         </div>
 
         <!-- PDF Viewer using iframe -->
@@ -106,5 +141,6 @@
         <br>
         <a href="cybersecurity.html" class="back-link">← Back to All Subjects</a>
     </div>
+    <script src="add-pdf.js"></script>
 </body>
 </html>
