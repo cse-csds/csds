@@ -131,6 +131,12 @@ app.delete('/api/subjects/:id', authenticateAdmin, async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
     console.log(`Backend server running on port ${PORT}`);
+    try {
+        const count = await subjectsDb.count({});
+        console.log(`Database initialized with ${count} subjects`);
+    } catch (err) {
+        console.error('Database check failed:', err);
+    }
 });
