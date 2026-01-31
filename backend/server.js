@@ -72,13 +72,20 @@ const authenticateAdmin = (req, res, next) => {
 
 app.post('/api/auth/login', async (req, res) => {
     const { email, password } = req.body;
+    const adminEmail = process.env.ADMIN_EMAIL;
+    const adminPassword = process.env.ADMIN_PASSWORD;
 
-    // For this project, we use credentials from .env
-    if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+    if (!adminEmail || !adminPassword) {
+        console.error('SYSTEM ERROR: Admin credentials are not set in environment variables!');
+        return res.status(500).json({ message: 'Server configuration error. Please check environment variables.' });
+    }
+
+    if (email === adminEmail && password === adminPassword) {
         const token = jwt.sign({ email, role: 'admin' }, JWT_SECRET, { expiresIn: '1h' });
         return res.json({ token, role: 'admin' });
     }
 
+    console.warn(`Failed login attempt for email: ${email}`);
     res.status(401).json({ message: 'Invalid credentials' });
 });
 
