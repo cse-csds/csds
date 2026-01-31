@@ -23,6 +23,15 @@ app.use('/pdfs', express.static(path.join(__dirname, '..', 'pdfs')));
 app.use('/files', express.static(path.join(__dirname, '..')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Root route for health check
+app.get('/', (req, res) => {
+    res.send('EduPortal Backend API is running...');
+});
+
+app.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok' });
+});
+
 // Multer Setup
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
