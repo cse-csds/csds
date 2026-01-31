@@ -72,21 +72,22 @@ const authenticateAdmin = (req, res, next) => {
 
 app.post('/api/auth/login', async (req, res) => {
     const { email, password } = req.body;
-    const adminEmail = process.env.ADMIN_EMAIL;
-    const adminPassword = process.env.ADMIN_PASSWORD;
 
-    if (!adminEmail || !adminPassword) {
-        console.error('SYSTEM ERROR: Admin credentials are not set in environment variables!');
-        return res.status(500).json({ message: 'Server configuration error. Please check environment variables.' });
-    }
+    // Normalize inputs
+    const typedEmail = (email || '').toLowerCase().trim();
+    const typedPassword = (password || '').trim();
 
-    if (email === adminEmail && password === adminPassword) {
-        const token = jwt.sign({ email, role: 'admin' }, JWT_SECRET, { expiresIn: '1h' });
+    // Get credentials from environment or use defaults
+    const adminEmail = (process.env.ADMIN_EMAIL || 'admin@gist.edu.in').toLowerCase().trim();
+    const adminPassword = (process.env.ADMIN_PASSWORD || 'admin123').trim();
+
+    if (typedEmail === adminEmail && typedPassword === adminPassword) {
+        const token = jwt.sign({ email: adminEmail, role: 'admin' }, JWT_SECRET, { expiresIn: '1h' });
         return res.json({ token, role: 'admin' });
     }
 
-    console.warn(`Failed login attempt for email: ${email}`);
-    res.status(401).json({ message: 'Invalid credentials' });
+    console.warn(`Failed login attempt for: ${typedEmail}`);
+    res.status(401).json({ message: 'Invalid credentials. Check email/password.' });
 });
 
 // --- SUBJECT ROUTES ---
