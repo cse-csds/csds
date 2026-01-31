@@ -1,0 +1,36 @@
+services:
+  # Backend
+  - type: web
+    name: eduportal-backend
+    env: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        value: admin@gist.edu.in
+      - key: ADMIN_PASSWORD
+        value: admin123
+      - key: NODE_ENV
+        value: production
+
+  # Frontend
+  - type: web
+    name: eduportal-frontend
+    env: static
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          name: eduportal-backend
+          type: web
+          property: host
+    rewriteRules:
+      - source: /*
+        destination: /index.html

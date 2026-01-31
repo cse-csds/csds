@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Lock, Mail, AlertCircle } from 'lucide-react';
+import api from '../api';
 
 const Login = ({ setToken }) => {
     const [email, setEmail] = useState('');
@@ -16,7 +16,7 @@ const Login = ({ setToken }) => {
         setLoading(true);
         setError('');
         try {
-            const resp = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+            const resp = await api.post('/api/auth/login', { email, password });
             localStorage.setItem('adminToken', resp.data.token);
             setToken(resp.data.token);
             navigate('/admin');

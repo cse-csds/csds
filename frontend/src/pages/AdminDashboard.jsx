@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, Trash2, ShieldCheck, Database, X, ExternalLink } from 'lucide-react';
+import api, { API_BASE_URL } from '../api';
 
 const AdminDashboard = ({ token }) => {
     const [subjects, setSubjects] = useState([]);
@@ -17,7 +17,7 @@ const AdminDashboard = ({ token }) => {
 
     const fetchSubjects = async () => {
         try {
-            const resp = await axios.get('http://localhost:5000/api/subjects');
+            const resp = await api.get('/api/subjects');
             setSubjects(resp.data);
         } catch (err) {
             showMsg('Failed to fetch subjects', 'error');
@@ -42,7 +42,7 @@ const AdminDashboard = ({ token }) => {
         }
 
         try {
-            await axios.post('http://localhost:5000/api/subjects',
+            await api.post('/api/subjects',
                 formData,
                 {
                     headers: {
@@ -65,7 +65,7 @@ const AdminDashboard = ({ token }) => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/api/subjects/${id}`, {
+            await api.delete(`/api/subjects/${id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             fetchSubjects();
@@ -81,9 +81,9 @@ const AdminDashboard = ({ token }) => {
         if (url.startsWith('http')) {
             fullUrl = url;
         } else if (url.startsWith('uploads/')) {
-            fullUrl = `http://localhost:5000/${url}`;
+            fullUrl = `${API_BASE_URL}/${url}`;
         } else {
-            fullUrl = `http://localhost:5000/files/${url}`;
+            fullUrl = `${API_BASE_URL}/files/${url}`;
         }
         window.open(fullUrl, '_blank');
     };

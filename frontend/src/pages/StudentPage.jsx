@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { motion } from 'framer-motion';
 import { GraduationCap, ShieldCheck, Database, RefreshCw, FileText } from 'lucide-react';
+import api, { API_BASE_URL } from '../api';
 
 const StudentPage = () => {
     const [subjects, setSubjects] = useState([]);
@@ -14,7 +14,7 @@ const StudentPage = () => {
     const fetchSubjects = async () => {
         setLoading(true);
         try {
-            const resp = await axios.get('http://localhost:5000/api/subjects');
+            const resp = await api.get('/api/subjects');
             setSubjects(resp.data);
         } catch (err) {
             console.error('Failed to fetch subjects');
@@ -29,9 +29,9 @@ const StudentPage = () => {
         if (url.startsWith('http')) {
             fullUrl = url;
         } else if (url.startsWith('uploads/')) {
-            fullUrl = `http://localhost:5000/${url}`;
+            fullUrl = `${API_BASE_URL}/${url}`;
         } else {
-            fullUrl = `http://localhost:5000/files/${url}`;
+            fullUrl = `${API_BASE_URL}/files/${url}`;
         }
         window.open(fullUrl, '_blank');
     };
