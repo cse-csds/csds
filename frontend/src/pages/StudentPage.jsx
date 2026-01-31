@@ -6,6 +6,7 @@ import api, { API_BASE_URL } from '../api';
 const StudentPage = () => {
     const [subjects, setSubjects] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         fetchSubjects();
@@ -13,11 +14,18 @@ const StudentPage = () => {
 
     const fetchSubjects = async () => {
         setLoading(true);
+        setError(null);
         try {
             const resp = await api.get('/api/subjects');
-            setSubjects(resp.data);
+            if (Array.isArray(resp.data)) {
+                setSubjects(resp.data);
+            } else {
+                console.error('API returned non-array data:', resp.data);
+                setError('Backend returned an invalid response.');
+            }
         } catch (err) {
-            console.error('Failed to fetch subjects');
+            console.error('Failed to fetch subjects:', err);
+            setError('Could not connect to the backend server. It may still be starting up.');
         } finally {
             setLoading(false);
         }
@@ -40,6 +48,25 @@ const StudentPage = () => {
         'Cyber Security': subjects.filter(s => s.category === 'Cyber Security'),
         'Data Science': subjects.filter(s => s.category === 'Data Science')
     };
+
+    if (loading) {
+        return (
+            <div className="loading-container">
+                <RefreshCw className="spin" size={48} />
+                <p>Loading EduPortal...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="loading-container error-state">
+                <RefreshCw size={48} onClick={fetchSubjects} style={{ cursor: 'pointer' }} />
+                <p>{error}</p>
+                <button onClick={fetchSubjects} className="cyber-btn" style={{ padding: '0.5rem 1rem' }}>Retry</button>
+            </div>
+        );
+    }
 
     return (
         <div className="student-container">

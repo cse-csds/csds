@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Trash2, ShieldCheck, Database, X, ExternalLink } from 'lucide-react';
+import { Plus, Trash2, ShieldCheck, Database, X, ExternalLink, RefreshCw } from 'lucide-react';
 import api, { API_BASE_URL } from '../api';
 
 const AdminDashboard = ({ token }) => {
@@ -10,17 +10,25 @@ const AdminDashboard = ({ token }) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [newCategory, setNewCategory] = useState('Cyber Security');
     const [message, setMessage] = useState({ text: '', type: '' });
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchSubjects();
     }, []);
 
     const fetchSubjects = async () => {
+        setLoading(true);
         try {
             const resp = await api.get('/api/subjects');
-            setSubjects(resp.data);
+            if (Array.isArray(resp.data)) {
+                setSubjects(resp.data);
+            } else {
+                setSubjects([]);
+            }
         } catch (err) {
             showMsg('Failed to fetch subjects', 'error');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -92,6 +100,15 @@ const AdminDashboard = ({ token }) => {
         'Cyber Security': subjects.filter(s => s.category === 'Cyber Security'),
         'Data Science': subjects.filter(s => s.category === 'Data Science')
     };
+
+    if (loading) {
+        return (
+            <div className="loading-container">
+                <RefreshCw className="spin" size={48} />
+                <p>Loading Admin Dashboard...</p>
+            </div>
+        );
+    }
 
     return (
         <div className="dashboard-container">
