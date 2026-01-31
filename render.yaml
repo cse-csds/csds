@@ -31,6 +31,7 @@ services:
           name: eduportal-backend
           type: web
           property: host
-    rewriteRules:
-      - source: /*
+    routes:
+      - type: rewrite
+        source: /*
         destination: /index.html
