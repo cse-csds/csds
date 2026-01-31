@@ -18,10 +18,8 @@ services:
         value: production
 
   # Frontend
-  - type: web
+  - type: static
     name: eduportal-frontend
-    env: static
-    plan: free
     rootDir: frontend
     buildCommand: npm install && npm run build
     staticPublishPath: dist
